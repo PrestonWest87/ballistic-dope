@@ -11,19 +11,19 @@
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#1a1a2e"
-    }
-  },
-  "ios": {
-    "supportsTablet": true,
-    "bundleIdentifier": "com.ballisticdope.app"
-  },
-  "android": {
-    "adaptiveIcon": {
-      "backgroundColor": "#1a1a2e"
     },
-    "package": "com.ballisticdope.app"
-  },
-  "plugins": [
-    "expo-router"
-  ]
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ballisticdope.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1a1a2e"
+      },
+      "package": "com.ballisticdope.app"
+    },
+    "plugins": [
+      "expo-router"
+    ]
+  }
 }

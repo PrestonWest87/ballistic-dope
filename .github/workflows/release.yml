@@ -40,11 +40,53 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
+      - name: Configure app.json
+        working-directory: apps/mobile
+        run: |
+          cat > app.json << 'EOF'
+          {
+            "expo": {
+              "name": "Ballistic Dope",
+              "slug": "ballistic-dope",
+              "version": "1.0.0",
+              "orientation": "portrait",
+              "icon": "./assets/icon.png",
+              "userInterfaceStyle": "dark",
+              "newArchEnabled": false,
+              "splash": {
+                "image": "./assets/splash.png",
+                "resizeMode": "contain",
+                "backgroundColor": "#1a1a2e"
+              }
+            },
+            "ios": {
+              "supportsTablet": true,
+              "bundleIdentifier": "com.ballisticdope.app",
+              "infoPlist": {
+                "ITSAppUsesNonExemptEncryption": false
+              }
+            },
+            "android": {
+              "adaptiveIcon": {
+                "backgroundColor": "#1a1a2e"
+              },
+              "package": "com.ballisticdope.app"
+            },
+            "extra": {
+              "eas": {
+                "projectId": "5dbb1468-ac2b-4258-9330-21bad94b2d93"
+              }
+            }
+          }
+          EOF
+
       - name: Link EAS Project
-        run: cd apps/mobile && eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --force --non-interactive
+        working-directory: apps/mobile
+        run: eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --force --non-interactive
 
       - name: Build Android Release (APK)
-        run: cd apps/mobile && eas build --platform android --profile production --non-interactive
+        working-directory: apps/mobile
+        run: eas build --platform android --profile production --non-interactive
 
       - name: Upload Android
         uses: actions/upload-artifact@v4
@@ -72,11 +114,53 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
+      - name: Configure app.json
+        working-directory: apps/mobile
+        run: |
+          cat > app.json << 'EOF'
+          {
+            "expo": {
+              "name": "Ballistic Dope",
+              "slug": "ballistic-dope",
+              "version": "1.0.0",
+              "orientation": "portrait",
+              "icon": "./assets/icon.png",
+              "userInterfaceStyle": "dark",
+              "newArchEnabled": false,
+              "splash": {
+                "image": "./assets/splash.png",
+                "resizeMode": "contain",
+                "backgroundColor": "#1a1a2e"
+              }
+            },
+            "ios": {
+              "supportsTablet": true,
+              "bundleIdentifier": "com.ballisticdope.app",
+              "infoPlist": {
+                "ITSAppUsesNonExemptEncryption": false
+              }
+            },
+            "android": {
+              "adaptiveIcon": {
+                "backgroundColor": "#1a1a2e"
+              },
+              "package": "com.ballisticdope.app"
+            },
+            "extra": {
+              "eas": {
+                "projectId": "5dbb1468-ac2b-4258-9330-21bad94b2d93"
+              }
+            }
+          }
+          EOF
+
       - name: Link EAS Project
-        run: cd apps/mobile && eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --force --non-interactive
+        working-directory: apps/mobile
+        run: eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --force --non-interactive
 
       - name: Build iOS Release
-        run: cd apps/mobile && eas build --platform ios --profile production --non-interactive
+        working-directory: apps/mobile
+        run: eas build --platform ios --profile production --non-interactive
 
   create-release:
     needs: [version-check, build-android, build-ios]

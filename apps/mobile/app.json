@@ -1,22 +1,15 @@
 {
-  "expo": {
-    "name": "Ballistic Dope",
-    "slug": "ballistic-dope",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#1a1a2e"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "5dbb1468-ac2b-4258-9330-21bad94b2d93"
-      }
-    }
+  "name": "ballistic-dope",
+  "version": "1.0.0",
+  "slug": "ballistic-dope",
+  "orientation": "portrait",
+  "icon": "./assets/icon.png",
+  "userInterfaceStyle": "automatic",
+  "newArchEnabled": true,
+  "splash": {
+    "image": "./assets/splash-icon.png",
+    "resizeMode": "contain",
+    "backgroundColor": "#1a1a2e"
   },
   "ios": {
     "supportsTablet": true,
@@ -28,6 +21,11 @@
       "backgroundColor": "#1a1a2e"
     },
     "package": "com.ballisticdope.app"
+  },
+  "extra": {
+    "eas": {
+      "projectId": "5dbb1468-ac2b-4258-9330-21bad94b2d93"
+    }
   },
   "cli": {
     "appVersionSource": "local"

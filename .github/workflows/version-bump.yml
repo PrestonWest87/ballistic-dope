@@ -1,0 +1,37 @@
+name: Version Bump
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  bump-version:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Get current version
+        id: current-version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "current=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Bump version
+        run: |
+          CURRENT=${{ steps.current-version.outputs.current }}
+          IFS='.' read -r major minor patch <<< "$CURRENT"
+          PATCH=$((patch + 1))
+          NEW_VERSION="$major.$minor.$PATCH"
+          npm version $NEW_VERSION --no-git-tag-version
+          echo "new=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Commit version bump
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: bump version to ${{ steps.bump-version.outputs.new }}"
+          file_pattern: "package.json"

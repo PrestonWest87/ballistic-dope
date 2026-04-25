@@ -1,0 +1,13 @@
+{
+  "name": "ballistic-dope",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": {
+    "packages": ["apps/*", "packages/*"]
+  },
+  "scripts": {
+    "dev": "cd apps/mobile && npx expo start",
+    "build": "cd apps/mobile && npx expo export",
+    "prebuild": "cd apps/mobile && npx expo prebuild"
+  }
+}

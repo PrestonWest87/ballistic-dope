@@ -2,6 +2,7 @@
   "name": "ballistic-dope",
   "version": "1.0.0",
   "private": true,
+  "main": "expo-router/entry",
   "workspaces": {
     "packages": ["apps/*", "packages/*"]
   },

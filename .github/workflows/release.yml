@@ -21,7 +21,64 @@ jobs:
       - id: version
         run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
 
-  build-android:
+  build-apk:
+    needs: version-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install EAS CLI
+        run: npm install -g eas-cli expo
+
+      - name: Create app.json
+        working-directory: apps/mobile
+        run: |
+          cat > app.json << 'EOF'
+          {
+            "expo": {
+              "name": "Ballistic Dope",
+              "slug": "ballistic-dope",
+              "version": "1.0.0",
+              "orientation": "portrait"
+            },
+            "android": {
+              "package": "com.ballisticdope.app"
+            },
+            "extra": {
+              "eas": {
+                "projectId": "5dbb1468-ac2b-4258-9330-21bad94b2d93"
+              }
+            }
+          }
+          EOF
+
+      - name: Create eas.json
+        working-directory: apps/mobile
+        run: echo '{"build":{"production":{}}}' > eas.json
+
+      - name: Run Expo Prebuild
+        working-directory: apps/mobile
+        run: npx expo prebuild --platform android --clean
+
+      - name: Build Debug APK
+        working-directory: apps/mobile/android
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: apps/mobile/android/app/build/outputs/apk/debug/*.apk
+
+  build-eas:
     needs: version-check
     runs-on: ubuntu-latest
     steps:
@@ -64,24 +121,16 @@ jobs:
         working-directory: apps/mobile
         run: echo '{"build":{"production":{}}}' > eas.json
 
-      - name: Link EAS Project
+      - name: Link EAS
         working-directory: apps/mobile
-        run: |
-          echo "y" | eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --non-interactive
+        run: echo "y" | eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --non-interactive
 
-      - name: Build Android
+      - name: Build Android (EAS)
         working-directory: apps/mobile
-        run: |
-          eas build --platform android --non-interactive --profile production
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-apk
-          path: apps/mobile/android/app/build/outputs/**/*.apk
+        run: eas build --platform android --non-interactive --profile production
 
   create-release:
-    needs: [version-check, build-android]
+    needs: [version-check, build-apk]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

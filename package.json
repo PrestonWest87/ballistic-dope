@@ -9,5 +9,8 @@
     "dev": "cd apps/mobile && npx expo start",
     "build": "cd apps/mobile && npx expo export",
     "prebuild": "cd apps/mobile && npx expo prebuild"
+  },
+  "dependencies": {
+    "js-ballistics": "^2.0.0"
   }
 }

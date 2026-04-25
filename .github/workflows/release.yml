@@ -69,15 +69,21 @@ jobs:
         working-directory: apps/mobile
         run: npx expo prebuild --platform android --clean
 
-      - name: Build Debug APK
+      - name: Enable JS bundling
         working-directory: apps/mobile/android
-        run: ./gradlew assembleDebug
+        run: |
+          echo "hermesEnabled=true" >> gradle.properties
+          echo "bundlingInRelease=true" >> gradle.properties
+
+      - name: Build Release APK
+        working-directory: apps/mobile/android
+        run: ./gradlew assembleRelease
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: apps/mobile/android/app/build/outputs/apk/debug/*.apk
+          path: apps/mobile/android/app/build/outputs/apk/release/*.apk
 
   create-release:
     needs: [version-check, build-apk]

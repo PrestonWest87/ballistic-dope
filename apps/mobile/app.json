@@ -25,5 +25,15 @@
       },
       "package": "com.ballisticdope.app"
     }
+  },
+  "cli": {
+    "appVersionSource": "local"
+  },
+  "build": {
+    "experimental": {
+      "ios": {
+        "devicePriority": ["iphone"]
+      }
+    }
   }
 }

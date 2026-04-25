@@ -36,10 +36,17 @@ jobs:
       - name: Install EAS CLI
         run: npm install -g eas-cli
 
+      - name: Configure EAS
+        run: |
+          npx expo init --project-id ballistic-dope --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
       - name: Build Android Release (APK)
         run: eas build --platform android --profile production --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EAS_BUILD_NO_EXPO_GO_WARNING: true
 
       - name: Upload Android
         uses: actions/upload-artifact@v4
@@ -64,10 +71,16 @@ jobs:
       - name: Install EAS CLI
         run: npm install -g eas-cli
 
+      - name: Configure EAS
+        run: npx expo init --project-id ballistic-dope --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
       - name: Build iOS Release
         run: eas build --platform ios --profile production --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EAS_BUILD_NO_EXPO_GO_WARNING: true
 
   create-release:
     needs: [version-check, build-android, build-ios]

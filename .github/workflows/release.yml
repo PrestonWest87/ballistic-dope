@@ -42,7 +42,7 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Link EAS Project
-        run: eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --non-interactive
+        run: eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --force --non-interactive
         env:
           EAS_BUILD_NO_EXPO_GO_WARNING: true
 
@@ -79,7 +79,7 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Link EAS Project
-        run: eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --non-interactive
+        run: eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --force --non-interactive
         env:
           EAS_BUILD_NO_EXPO_GO_WARNING: true
 

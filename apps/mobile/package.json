@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "npx expo start",
     "build": "npx expo export",
-    "prebuild": "npx expo prebuild"
+    "prebuild": "npx expo prebuild",
+    "android": "npx expo run:android",
+    "start": "npx expo start"
   },
   "dependencies": {
     "expo": "~52.0.0",

@@ -35,11 +35,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Setup EAS
-        uses: expo/expo-github-action@v8
-        with:
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
 
       - name: Create app.json
         working-directory: apps/mobile
@@ -50,9 +47,7 @@ jobs:
               "name": "Ballistic Dope",
               "slug": "ballistic-dope",
               "version": "1.0.0",
-              "orientation": "portrait",
-              "icon": "./assets/icon.png",
-              "userInterfaceStyle": "dark"
+              "orientation": "portrait"
             },
             "android": {
               "package": "com.ballisticdope.app"
@@ -72,12 +67,12 @@ jobs:
       - name: Link EAS Project
         working-directory: apps/mobile
         run: |
-          npx expo-var eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --non-interactive 2>/dev/null || true
+          echo "y" | eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --non-interactive
 
       - name: Build Android
         working-directory: apps/mobile
         run: |
-          npx eas build --platform android --non-interactive --profile production
+          eas build --platform android --non-interactive --profile production
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

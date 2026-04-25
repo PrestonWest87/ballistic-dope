@@ -1,15 +1,17 @@
 {
-  "name": "ballistic-dope",
-  "version": "1.0.0",
-  "slug": "ballistic-dope",
-  "orientation": "portrait",
-  "icon": "./assets/icon.png",
-  "userInterfaceStyle": "automatic",
-  "newArchEnabled": true,
-  "splash": {
-    "image": "./assets/splash-icon.png",
-    "resizeMode": "contain",
-    "backgroundColor": "#1a1a2e"
+  "expo": {
+    "name": "Ballistic Dope",
+    "slug": "ballistic-dope",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1a1a2e"
+    }
   },
   "ios": {
     "supportsTablet": true,
@@ -32,11 +34,6 @@
   },
   "build": {
     "production": {
-      "android": {
-        "buildType": "apk"
-      }
-    },
-    "preview": {
       "android": {
         "buildType": "apk"
       }

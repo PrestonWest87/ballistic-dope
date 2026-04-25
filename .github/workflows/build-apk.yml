@@ -1,0 +1,42 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create expo-app directory
+        run: |
+          mkdir -p apps/mobile/android/app/src/main/assets
+          cd apps/mobile
+
+      - name: Prebuild Android
+        run: npx expo prebuild --platform android --clean
+        working-directory: apps/mobile
+
+      - name: Build Debug APK
+        run: |
+          cd android
+          ./gradlew assembleDebug
+        working-directory: apps/mobile/android
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ballistic-dope-debug.apk
+          path: apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk

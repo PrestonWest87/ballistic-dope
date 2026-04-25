@@ -1,0 +1,30 @@
+{
+  "build": {
+    "production": {
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "ios": {
+        "buildType": "archive"
+      }
+    },
+    "preview": {
+      "android": {
+        "buildType": "apk",
+        "gradleArgs": ["-Dorg.gradle.jvmargs=-Xmx4g"]
+      }
+    },
+    "development": {
+      "android": {
+        "buildType": "apk"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "service-account-key.json"
+      }
+    }
+  }
+}

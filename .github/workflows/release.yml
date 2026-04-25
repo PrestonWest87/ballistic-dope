@@ -38,46 +38,12 @@ jobs:
           node-version: 24
 
       - name: Install dependencies
+        working-directory: apps/mobile
         run: npm install
 
-      - name: Install EAS CLI
-        run: npm install -g eas-cli expo
-
-      - name: Create app.json
-        working-directory: apps/mobile
-        run: |
-          cat > app.json << 'EOF'
-          {
-            "expo": {
-              "name": "Ballistic Dope",
-              "slug": "ballistic-dope",
-              "version": "1.0.0",
-              "orientation": "portrait"
-            },
-            "android": {
-              "package": "com.ballisticdope.app"
-            },
-            "extra": {
-              "eas": {
-                "projectId": "5dbb1468-ac2b-4258-9330-21bad94b2d93"
-              }
-            }
-          }
-          EOF
-
-      - name: Run Expo Prebuild
-        working-directory: apps/mobile
-        run: npx expo prebuild --platform android --clean
-
-      - name: Enable JS bundling
-        working-directory: apps/mobile/android
-        run: |
-          echo "hermesEnabled=true" >> gradle.properties
-          echo "bundlingInRelease=true" >> gradle.properties
-
       - name: Build Release APK
-        working-directory: apps/mobile/android
-        run: ./gradlew assembleRelease
+        working-directory: apps/mobile
+        run: npx expo run:android --variant release --no-install
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

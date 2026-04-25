@@ -11,31 +11,21 @@
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#1a1a2e"
-    }
-  },
-  "ios": {
-    "supportsTablet": true,
-    "bundleIdentifier": "com.ballisticdope.app"
-  },
-  "android": {
-    "adaptiveIcon": {
-      "foregroundImage": "./assets/adaptive-icon.png",
-      "backgroundColor": "#1a1a2e"
     },
-    "package": "com.ballisticdope.app"
-  },
-  "extra": {
-    "eas": {
-      "projectId": "5dbb1468-ac2b-4258-9330-21bad94b2d93"
-    }
-  },
-  "cli": {
-    "appVersionSource": "local"
-  },
-  "build": {
-    "production": {
-      "android": {
-        "buildType": "apk"
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ballisticdope.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1a1a2e"
+      },
+      "package": "com.ballisticdope.app"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5dbb1468-ac2b-4258-9330-21bad94b2d93"
       }
     }
   }

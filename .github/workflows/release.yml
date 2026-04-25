@@ -1,4 +1,4 @@
-name: Release
+name: Release (Android)
 
 on:
   push:
@@ -8,6 +8,7 @@ on:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   CI: 1
+  EAS_BUILD_NO_EXPO_GO_WARNING: true
 
 jobs:
   version-check:
@@ -40,10 +41,10 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Write app.json
+      - name: Create app.json
         working-directory: apps/mobile
         run: |
-          cat > app.json << 'APPEOF'
+          cat > app.json << 'EOF'
           {
             "expo": {
               "name": "Ballistic Dope",
@@ -51,24 +52,9 @@ jobs:
               "version": "1.0.0",
               "orientation": "portrait",
               "icon": "./assets/icon.png",
-              "userInterfaceStyle": "dark",
-              "splash": {
-                "image": "./assets/splash.png",
-                "resizeMode": "contain",
-                "backgroundColor": "#1a1a2e"
-              }
-            },
-            "ios": {
-              "supportsTablet": true,
-              "bundleIdentifier": "com.ballisticdope.app",
-              "infoPlist": {
-                "ITSAppUsesNonExemptEncryption": false
-              }
+              "userInterfaceStyle": "dark"
             },
             "android": {
-              "adaptiveIcon": {
-                "backgroundColor": "#1a1a2e"
-              },
               "package": "com.ballisticdope.app"
             },
             "extra": {
@@ -77,110 +63,35 @@ jobs:
               }
             }
           }
-          APPEOF
+          EOF
 
-      - name: Write eas.json
+      - name: Create eas.json
         working-directory: apps/mobile
-        run: |
-          cat > eas.json << 'EASEOF'
-          {"build":{"production":{}}}
-          EASEOF
+        run: echo '{"build":{"production":{}}}' > eas.json
 
       - name: Link EAS Project
         working-directory: apps/mobile
-        run: eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --force --non-interactive
+        run: |
+          npx expo-var eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --non-interactive 2>/dev/null || true
 
-      - name: Build Android Release
+      - name: Build Android
         working-directory: apps/mobile
-        run: eas build --platform android --non-interactive
+        run: |
+          npx eas build --platform android --non-interactive --profile production
 
-      - name: Upload Android
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: apps/mobile/android/app/build/outputs/*.apk
-
-  build-ios:
-    needs: version-check
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Setup EAS
-        uses: expo/expo-github-action@v8
-        with:
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Write app.json
-        working-directory: apps/mobile
-        run: |
-          cat > app.json << 'APPEOF'
-          {
-            "expo": {
-              "name": "Ballistic Dope",
-              "slug": "ballistic-dope",
-              "version": "1.0.0",
-              "orientation": "portrait",
-              "icon": "./assets/icon.png",
-              "userInterfaceStyle": "dark",
-              "splash": {
-                "image": "./assets/splash.png",
-                "resizeMode": "contain",
-                "backgroundColor": "#1a1a2e"
-              }
-            },
-            "ios": {
-              "supportsTablet": true,
-              "bundleIdentifier": "com.ballisticdope.app",
-              "infoPlist": {
-                "ITSAppUsesNonExemptEncryption": false
-              }
-            },
-            "android": {
-              "adaptiveIcon": {
-                "backgroundColor": "#1a1a2e"
-              },
-              "package": "com.ballisticdope.app"
-            },
-            "extra": {
-              "eas": {
-                "projectId": "5dbb1468-ac2b-4258-9330-21bad94b2d93"
-              }
-            }
-          }
-          APPEOF
-
-      - name: Write eas.json
-        working-directory: apps/mobile
-        run: |
-          cat > eas.json << 'EASEOF'
-          {"build":{"production":{}}}
-          EASEOF
-
-      - name: Link EAS Project
-        working-directory: apps/mobile
-        run: eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --force --non-interactive
-
-      - name: Build iOS Release
-        working-directory: apps/mobile
-        run: eas build --platform ios --non-interactive
+          path: apps/mobile/android/app/build/outputs/**/*.apk
 
   create-release:
-    needs: [version-check, build-android, build-ios]
+    needs: [version-check, build-android]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download Android APK
+      - name: Download APK
         uses: actions/download-artifact@v4
         with:
           name: android-apk

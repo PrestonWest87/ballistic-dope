@@ -30,6 +30,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install
@@ -39,6 +40,11 @@ jobs:
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Link EAS Project
+        run: eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --non-interactive
+        env:
+          EAS_BUILD_NO_EXPO_GO_WARNING: true
 
       - name: Build Android Release (APK)
         run: eas build --platform android --profile production --non-interactive
@@ -61,6 +67,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install
@@ -70,6 +77,11 @@ jobs:
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Link EAS Project
+        run: eas project:init --id 5dbb1468-ac2b-4258-9330-21bad94b2d93 --non-interactive
+        env:
+          EAS_BUILD_NO_EXPO_GO_WARNING: true
 
       - name: Build iOS Release
         run: eas build --platform ios --profile production --non-interactive

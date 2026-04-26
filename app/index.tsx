@@ -1,7 +1,26 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../packages/theme/src';
+
+const COLORS = {
+  background: '#0f0f23',
+  surface: '#1a1a2e',
+  surfaceLight: '#252542',
+  primary: '#00d4aa',
+  text: '#ffffff',
+  textMuted: '#a0a0b0',
+};
+
+const SPACING = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 };
+
+const TYPOGRAPHY = {
+  h1: { fontSize: 28, fontWeight: '700' as const },
+  h3: { fontSize: 18, fontWeight: '600' as const },
+  caption: { fontSize: 14, fontWeight: '400' as const },
+  small: { fontSize: 12, fontWeight: '400' as const },
+};
+
+const BORDER_RADIUS = { sm: 4, md: 8, lg: 16, full: 9999 };
 
 const modes = [
   { key: 'quick', title: 'Quick Dirty', desc: 'Minimal inputs, fast dope', icon: '⚡' },

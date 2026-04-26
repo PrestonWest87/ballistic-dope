@@ -8,12 +8,118 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../packages/theme/src';
-import {
-  calculateQuickDirty,
-  QuickDirtyInputs,
-  DopePoint,
-} from '../packages/core/src';
+
+const COLORS = {
+  background: '#0f0f23',
+  surface: '#1a1a2e',
+  surfaceLight: '#252542',
+  primary: '#00d4aa',
+  primaryDark: '#00a88a',
+  secondary: '#ff6b35',
+  text: '#ffffff',
+  textMuted: '#a0a0b0',
+  error: '#ff4757',
+  wind: '#4ecdc4',
+  trajectory: '#ffd93d',
+  energy: '#ff6b35',
+  velocity: '#6c5ce7',
+  grid: '#2d2d4a',
+};
+
+const SPACING = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 };
+
+const TYPOGRAPHY = {
+  h1: { fontSize: 28, fontWeight: '700' as const },
+  h2: { fontSize: 22, fontWeight: '600' as const },
+  h3: { fontSize: 18, fontWeight: '600' as const },
+  body: { fontSize: 16, fontWeight: '400' as const },
+  caption: { fontSize: 14, fontWeight: '400' as const },
+  small: { fontSize: 12, fontWeight: '400' as const },
+};
+
+const BORDER_RADIUS = { sm: 4, md: 8, lg: 16, full: 9999 };
+
+interface DopePoint {
+  range: number;
+  drop: number;
+  holdover: number;
+  velocity: number;
+  energy: number;
+  time: number;
+  windage: number;
+  clicks: number;
+}
+
+const G_CONSTANT = 32.174;
+const FT_TO_INCHES = 12;
+const YDS_TO_FT = 3;
+const GRAVITY = 32.174;
+
+function calculateTimeOfFlight(rangeFeet: number, velocity: number, bc: number): number {
+  const avgVelocity = velocity * 0.85;
+  const time = rangeFeet / avgVelocity;
+  const dragFactor = 1 + (rangeFeet / 1000) * 0.1;
+  return time * dragFactor;
+}
+
+function calculateDrop(time: number): number {
+  return 0.5 * GRAVITY * time * time * FT_TO_INCHES;
+}
+
+function calculateVelocityAtRange(initialVelocity: number, rangeFeet: number, bc: number): number {
+  const dragFactor = bc * 0.01;
+  const decay = Math.exp(-dragFactor * rangeFeet / initialVelocity);
+  return initialVelocity * Math.max(decay, 0.3);
+}
+
+function calculateEnergy(velocity: number, bulletWeight: number): number {
+  return (bulletWeight * velocity * velocity) / 450240;
+}
+
+function calculateQuickDirty(
+  velocity: number,
+  bc: number,
+  zeroRange: number,
+  maxRange: number = 1000,
+  increment: number = 50
+): DopePoint[] {
+  const zeroFeet = zeroRange * YDS_TO_FT;
+  const bulletWeight = 150;
+
+  const dopeChart: DopePoint[] = [];
+  let currentRange = 0;
+
+  while (currentRange <= maxRange) {
+    const rangeFeet = currentRange * YDS_TO_FT;
+    const time = calculateTimeOfFlight(rangeFeet, velocity, bc);
+    const drop = calculateDrop(time);
+    const adjustedDrop = drop * (rangeFeet > zeroFeet ? (rangeFeet - zeroFeet) / rangeFeet : 0);
+    const holdover = adjustedDrop - ((rangeFeet - zeroFeet) * drop / zeroFeet);
+    const currentVelocity = calculateVelocityAtRange(velocity, rangeFeet, bc);
+    const energy = calculateEnergy(currentVelocity, bulletWeight);
+    
+    let clicks = 0;
+    if (currentRange > zeroRange) {
+      const moaAdjustment = (holdover / (currentRange / 100)) * 3;
+      clicks = moaAdjustment / 0.25;
+    }
+
+    dopeChart.push({
+      range: currentRange,
+      drop: Math.round(adjustedDrop * 100) / 100,
+      holdover: Math.round(holdover * 100) / 100,
+      velocity: Math.round(currentVelocity),
+      energy: Math.round(energy),
+      time: Math.round(time * 100) / 100,
+      windage: 0,
+      clicks: Math.round(clicks),
+    });
+
+    currentRange += increment;
+  }
+
+  return dopeChart;
+}
 
 interface InputFieldProps {
   label: string;
@@ -51,13 +157,11 @@ export default function QuickScreen() {
   const [results, setResults] = useState<DopePoint[] | null>(null);
 
   const calculate = () => {
-    const inputs: QuickDirtyInputs = {
-      velocity: parseFloat(velocity) || 2800,
-      ballisticCoefficient: parseFloat(bc) || 0.5,
-      zeroRange: parseFloat(zeroRange) || 100,
-    };
-    const result = calculateQuickDirty(inputs, 1000, 50);
-    setResults(result.dopeChart);
+    const v = parseFloat(velocity) || 2800;
+    const b = parseFloat(bc) || 0.5;
+    const z = parseFloat(zeroRange) || 100;
+    const result = calculateQuickDirty(v, b, z, 1000, 50);
+    setResults(result);
   };
 
   return (

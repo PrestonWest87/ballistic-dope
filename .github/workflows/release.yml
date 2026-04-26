@@ -12,6 +12,7 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   CI: 1
   EAS_BUILD_NO_EXPO_GO_WARNING: true
+  NODE_ENV: production
 
 jobs:
   version-check:
@@ -38,9 +39,9 @@ jobs:
           node-version: 24
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Run Expo Prebuild
+      - name: Clean and Run Expo Prebuild
         run: npx expo prebuild --platform android --clean
 
       - name: Build Release APK

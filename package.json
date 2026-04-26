@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "expo": "^52.0.0",
+    "expo-asset": "^11.0.0",
     "expo-router": "~4.0.0",
     "js-ballistics": "^2.0.0",
     "react": "18.3.1",

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Switch } from 'react-native';
 import { useRouter } from 'expo-router';
-import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../../packages/theme/src';
-import { calculateAdvanced, AdvancedInputs, DopePoint } from '../../../packages/core/src';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../packages/theme/src';
+import { calculateAdvanced, AdvancedInputs, DopePoint } from '../packages/core/src';
 
 function InputField({ label, value, unit, onChange, placeholder, keyboardType = 'decimal-pad' }: any) {
   return (

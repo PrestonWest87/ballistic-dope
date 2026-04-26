@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions } from 'react-native';
 import Svg, { Path, Line, Text as SvgText, Circle } from 'react-native-svg';
 import { useLocalSearchParams } from 'expo-router';
-import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../../packages/theme/src';
-import { DopePoint } from '../../../packages/core/src';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../packages/theme/src';
+import { DopePoint } from '../packages/core/src';
 
 const { width } = Dimensions.get('window');
 const CHART_WIDTH = width - 48;

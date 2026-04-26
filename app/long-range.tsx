@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Switch } from 'react-native';
-import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../../packages/theme/src';
-import { calculateLongRange, LongRangeInputs, DopePoint } from '../../../packages/core/src';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../packages/theme/src';
+import { calculateLongRange, LongRangeInputs, DopePoint } from '../packages/core/src';
 
 function InputField({ label, value, unit, onChange, placeholder }: any) {
   return (

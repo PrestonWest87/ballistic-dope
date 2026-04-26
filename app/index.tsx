@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../packages/theme/src';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../packages/theme/src';
 
 const modes = [
   { key: 'quick', title: 'Quick Dirty', desc: 'Minimal inputs, fast dope', icon: '⚡' },

@@ -8,12 +8,12 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../../packages/theme/src';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../packages/theme/src';
 import {
   calculateQuickDirty,
   QuickDirtyInputs,
   DopePoint,
-} from '../../../packages/core/src';
+} from '../packages/core/src';
 
 interface InputFieldProps {
   label: string;

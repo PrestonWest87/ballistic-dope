@@ -1,4 +1,4 @@
-package com.anonymous.ballisticdope
+package com.ballisticdope.app
 
 import android.app.Application
 import android.content.res.Configuration

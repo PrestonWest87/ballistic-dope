@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "npx expo start",
-    "build": "npx expo export",
+    "build": "npx expo export --platform android",
     "prebuild": "npx expo prebuild",
     "android": "npx expo run:android",
     "start": "npx expo start",
@@ -25,32 +25,5 @@
     "@babel/core": "^7.25.2",
     "@types/react": "~18.3.12",
     "typescript": "~5.3.3"
-  },
-  "expo": {
-    "name": "Ballistic Dope",
-    "slug": "ballistic-dope",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "dark",
-    "newArchEnabled": false,
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#1a1a2e"
-    },
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.ballisticdope.app"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#1a1a2e"
-      },
-      "package": "com.ballisticdope.app"
-    },
-    "plugins": [
-      "expo-router"
-    ]
   }
 }

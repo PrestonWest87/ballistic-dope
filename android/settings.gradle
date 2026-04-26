@@ -21,7 +21,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
   }
 }
 
-rootProject.name = 'ballistic-dope'
+rootProject.name = 'Ballistic Dope'
 
 dependencyResolutionManagement {
   versionCatalogs {
